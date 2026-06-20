@@ -14,7 +14,70 @@
       min-height: 100vh;
     }
 
-    /* ヘッダー */
+    /* ──────────────────────────────
+       ログイン画面
+    ────────────────────────────── */
+    #auth-page {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 24px;
+    }
+
+    .auth-box {
+      background: white;
+      border-radius: 16px;
+      padding: 40px 36px;
+      width: 100%;
+      max-width: 400px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.10);
+    }
+
+    .auth-box .logo {
+      text-align: center;
+      font-size: 2rem;
+      margin-bottom: 8px;
+    }
+
+    .auth-box h1 {
+      text-align: center;
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: #4f46e5;
+      margin-bottom: 28px;
+    }
+
+    .tab-row {
+      display: flex;
+      border-bottom: 2px solid #e5e7eb;
+      margin-bottom: 24px;
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 10px;
+      background: none;
+      border: none;
+      font-size: 0.92rem;
+      font-weight: 600;
+      color: #999;
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -2px;
+      transition: color 0.2s, border-color 0.2s;
+    }
+
+    .tab-btn.active {
+      color: #4f46e5;
+      border-bottom-color: #4f46e5;
+    }
+
+    /* ──────────────────────────────
+       掲示板画面
+    ────────────────────────────── */
+    #board-page { display: none; }
+
     header {
       background: #4f46e5;
       color: white;
@@ -22,49 +85,68 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
     }
-    header .title { font-size: 1.3rem; font-weight: bold; }
-    header .user-info { display: flex; align-items: center; gap: 12px; font-size: 0.85rem; }
-    header .user-email { opacity: 0.9; }
+
+    .header-title { font-size: 1.2rem; font-weight: bold; }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 0.83rem;
+    }
+
+    .header-email { opacity: 0.85; }
+
     .logout-btn {
-      background: rgba(255,255,255,0.2);
+      background: rgba(255,255,255,0.18);
       color: white;
       border: 1px solid rgba(255,255,255,0.4);
       padding: 5px 14px;
       border-radius: 6px;
       font-size: 0.82rem;
+      font-weight: 600;
       cursor: pointer;
       transition: background 0.2s;
     }
-    .logout-btn:hover { background: rgba(255,255,255,0.35); }
 
-    main { max-width: 720px; margin: 32px auto; padding: 0 16px; }
+    .logout-btn:hover { background: rgba(255,255,255,0.32); }
 
-    /* カード共通 */
+    main {
+      max-width: 720px;
+      margin: 32px auto;
+      padding: 0 16px 40px;
+    }
+
+    /* ──────────────────────────────
+       共通部品
+    ────────────────────────────── */
     .card {
       background: white;
       border-radius: 12px;
       padding: 24px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.07);
       margin-bottom: 28px;
     }
+
     .card h2 {
-      font-size: 1.05rem;
+      font-size: 1rem;
       font-weight: 700;
-      margin-bottom: 18px;
       color: #4f46e5;
+      margin-bottom: 18px;
     }
 
-    /* フォーム部品 */
     .form-group { margin-bottom: 14px; }
+
     .form-group label {
       display: block;
       font-size: 0.82rem;
       font-weight: 600;
-      margin-bottom: 5px;
       color: #555;
+      margin-bottom: 5px;
     }
+
     .form-group input,
     .form-group textarea {
       width: 100%;
@@ -75,45 +157,35 @@
       font-family: inherit;
       transition: border-color 0.2s;
     }
+
     .form-group input:focus,
     .form-group textarea:focus { outline: none; border-color: #4f46e5; }
+
     .form-group textarea { resize: vertical; min-height: 96px; }
 
-    /* ボタン群 */
-    .btn-row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 4px; }
     .btn {
+      display: inline-block;
       padding: 10px 22px;
       border: none;
       border-radius: 8px;
-      font-size: 0.92rem;
+      font-size: 0.93rem;
       font-weight: 600;
       cursor: pointer;
       transition: background 0.2s, opacity 0.2s;
     }
-    .btn:disabled { opacity: 0.5; cursor: not-allowed; }
-    .btn-primary { background: #4f46e5; color: white; }
+
+    .btn:disabled { opacity: 0.45; cursor: not-allowed; }
+    .btn-primary  { background: #4f46e5; color: white; width: 100%; }
     .btn-primary:hover:not(:disabled) { background: #4338ca; }
-    .btn-secondary { background: #e5e7eb; color: #374151; }
-    .btn-secondary:hover:not(:disabled) { background: #d1d5db; }
 
-    /* メッセージ */
-    .msg { font-size: 0.84rem; margin-top: 10px; min-height: 1.2em; }
-    .msg.error { color: #ef4444; }
-    .msg.success { color: #16a34a; }
-
-    /* ログイン状態バッジ */
-    .auth-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 0.82rem;
-      padding: 5px 12px;
-      border-radius: 99px;
-      font-weight: 600;
-      margin-bottom: 20px;
+    .form-msg {
+      font-size: 0.83rem;
+      margin-top: 10px;
+      min-height: 1.2em;
     }
-    .auth-badge.logged-in  { background: #dcfce7; color: #15803d; }
-    .auth-badge.logged-out { background: #fee2e2; color: #b91c1c; }
+
+    .form-msg.error   { color: #ef4444; }
+    .form-msg.success { color: #16a34a; }
 
     /* 投稿カード */
     .message-card {
@@ -124,51 +196,50 @@
       box-shadow: 0 1px 6px rgba(0,0,0,0.06);
       animation: fadeIn 0.25s ease;
     }
+
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(6px); }
       to   { opacity: 1; transform: translateY(0); }
     }
-    .message-header {
+
+    .msg-header {
       display: flex;
       justify-content: space-between;
       align-items: baseline;
       margin-bottom: 6px;
     }
-    .message-name { font-weight: 700; color: #4f46e5; font-size: 0.93rem; }
-    .message-date { font-size: 0.76rem; color: #aaa; }
-    .message-room { font-size: 0.76rem; color: #6366f1; font-weight: 600; margin-bottom: 6px; }
-    .message-body { font-size: 0.9rem; line-height: 1.65; color: #444; white-space: pre-wrap; }
 
-    .status { text-align: center; color: #aaa; font-size: 0.88rem; padding: 24px 0; }
-    .status.error { color: #ef4444; }
+    .msg-name  { font-weight: 700; color: #4f46e5; font-size: 0.93rem; }
+    .msg-date  { font-size: 0.76rem; color: #bbb; }
+    .msg-room  { font-size: 0.76rem; color: #6366f1; font-weight: 600; margin-bottom: 6px; }
+    .msg-body  { font-size: 0.9rem; line-height: 1.65; color: #444; white-space: pre-wrap; }
 
-    /* 未ログイン時の投稿エリア */
-    .locked-notice {
+    .status-text {
       text-align: center;
-      color: #999;
-      font-size: 0.9rem;
-      padding: 16px 0 4px;
+      color: #bbb;
+      font-size: 0.88rem;
+      padding: 28px 0;
     }
+
+    .status-text.error { color: #ef4444; }
   </style>
 </head>
 <body>
 
-<!-- ヘッダー -->
-<header>
-  <span class="title">📋 掲示板</span>
-  <div class="user-info" id="headerAuth">
-    <span style="opacity:0.7; font-size:0.82rem;">読み込み中...</span>
-  </div>
-</header>
+<!-- ══════════════════════════════
+     ログイン画面
+══════════════════════════════ -->
+<div id="auth-page">
+  <div class="auth-box">
+    <div class="logo">📋</div>
+    <h1>掲示板</h1>
 
-<main>
+    <!-- タブ -->
+    <div class="tab-row">
+      <button class="tab-btn active" id="tabLogin">ログイン</button>
+      <button class="tab-btn" id="tabSignup">新規登録</button>
+    </div>
 
-  <!-- ログイン状態バッジ -->
-  <div id="authBadge"></div>
-
-  <!-- 認証フォーム（未ログイン時のみ表示） -->
-  <div class="card" id="authCard">
-    <h2>ログイン / 新規登録</h2>
     <div class="form-group">
       <label for="authEmail">メールアドレス</label>
       <input type="email" id="authEmail" placeholder="example@mail.com" />
@@ -177,159 +248,178 @@
       <label for="authPassword">パスワード</label>
       <input type="password" id="authPassword" placeholder="6文字以上" />
     </div>
-    <div class="btn-row">
-      <button class="btn btn-primary" id="loginBtn">ログイン</button>
-      <button class="btn btn-secondary" id="signupBtn">新規登録</button>
-    </div>
-    <p class="msg" id="authMsg"></p>
-  </div>
 
-  <!-- 投稿フォーム（ログイン中のみ表示） -->
-  <div class="card" id="postCard" style="display:none;">
-    <h2>新しい投稿</h2>
-    <div class="form-group">
-      <label for="room">ルーム</label>
-      <input type="text" id="room" placeholder="例: demo" />
-    </div>
-    <div class="form-group">
-      <label for="name">名前</label>
-      <input type="text" id="name" placeholder="あなたの名前" />
-    </div>
-    <div class="form-group">
-      <label for="body">本文</label>
-      <textarea id="body" placeholder="内容を入力してください"></textarea>
-    </div>
-    <button class="btn btn-primary" id="submitBtn">投稿する</button>
-    <p class="msg" id="postMsg"></p>
+    <button class="btn btn-primary" id="authBtn">ログイン</button>
+    <p class="form-msg" id="authMsg"></p>
   </div>
+</div>
 
-  <!-- 投稿一覧 -->
-  <div>
+<!-- ══════════════════════════════
+     掲示板画面
+══════════════════════════════ -->
+<div id="board-page">
+  <header>
+    <span class="header-title">📋 掲示板</span>
+    <div class="header-right">
+      <span class="header-email" id="headerEmail"></span>
+      <button class="logout-btn" id="logoutBtn">ログアウト</button>
+    </div>
+  </header>
+
+  <main>
+    <!-- 投稿フォーム -->
+    <div class="card">
+      <h2>新しい投稿</h2>
+      <div class="form-group">
+        <label for="room">ルーム</label>
+        <input type="text" id="room" placeholder="例: demo" />
+      </div>
+      <div class="form-group">
+        <label for="name">名前</label>
+        <input type="text" id="name" placeholder="あなたの名前" />
+      </div>
+      <div class="form-group">
+        <label for="body">本文</label>
+        <textarea id="body" placeholder="内容を入力してください"></textarea>
+      </div>
+      <button class="btn btn-primary" id="submitBtn">投稿する</button>
+      <p class="form-msg" id="postMsg"></p>
+    </div>
+
+    <!-- 投稿一覧 -->
     <h2 style="font-size:1rem; margin-bottom:14px; color:#333;">投稿一覧</h2>
     <div id="messageList">
-      <p class="status">読み込み中...</p>
+      <p class="status-text">読み込み中...</p>
     </div>
-  </div>
-
-</main>
+  </main>
+</div>
 
 <script type="module">
   import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
 
-  // ※ 以下の2行に実際の値を入れてください
   const SUPABASE_URL = 'https://gicmqububslgkefpyveg.supabase.co'
   const SUPABASE_KEY = 'sb_publishable_wWwEoqvg8eOrWnJhY0_HGA_oDHqlroq'
 
   const supabase = createClient(SUPABASE_URL, SUPABASE_KEY)
 
-  // ─── UI 更新 ─────────────────────────────────────────
-  function renderAuthState(user) {
-    const headerAuth = document.getElementById('headerAuth')
-    const authBadge  = document.getElementById('authBadge')
-    const authCard   = document.getElementById('authCard')
-    const postCard   = document.getElementById('postCard')
-
-    if (user) {
-      headerAuth.innerHTML = `
-        <span class="user-email">${escapeHtml(user.email)}</span>
-        <button class="logout-btn" id="logoutBtn">ログアウト</button>
-      `
-      document.getElementById('logoutBtn').addEventListener('click', handleLogout)
-
-      authBadge.innerHTML = `<span class="auth-badge logged-in">✓ ログイン中</span>`
-      authCard.style.display  = 'none'
-      postCard.style.display  = 'block'
-    } else {
-      headerAuth.innerHTML = `<span style="opacity:0.7; font-size:0.82rem;">未ログイン</span>`
-      authBadge.innerHTML  = `<span class="auth-badge logged-out">✕ 未ログイン</span>`
-      authCard.style.display  = 'block'
-      postCard.style.display  = 'none'
-    }
+  // ─── 画面切り替え ──────────────────────────────────────
+  function showBoard(user) {
+    document.getElementById('auth-page').style.display  = 'none'
+    document.getElementById('board-page').style.display = 'block'
+    document.getElementById('headerEmail').textContent  = user.email
+    loadMessages()
   }
 
-  // ─── 認証イベントを購読 ───────────────────────────────
+  function showAuth() {
+    document.getElementById('auth-page').style.display  = 'flex'
+    document.getElementById('board-page').style.display = 'none'
+  }
+
+  // ─── 認証状態を購読 ────────────────────────────────────
   supabase.auth.onAuthStateChange((_event, session) => {
-    renderAuthState(session?.user ?? null)
+    session?.user ? showBoard(session.user) : showAuth()
   })
 
-  // ─── 新規登録 ─────────────────────────────────────────
-  document.getElementById('signupBtn').addEventListener('click', async () => {
-    const email    = document.getElementById('authEmail').value.trim()
-    const password = document.getElementById('authPassword').value
-    const msg      = document.getElementById('authMsg')
-    setAuthBtns(true)
+  // ─── タブ切り替え ──────────────────────────────────────
+  let mode = 'login'
 
-    const { error } = await supabase.auth.signUp({ email, password })
-    msg.className = error ? 'msg error' : 'msg success'
-    msg.textContent = error
-      ? `登録失敗: ${error.message}`
-      : '確認メールを送信しました。メールを確認してください。'
-    setAuthBtns(false)
+  document.getElementById('tabLogin').addEventListener('click', () => {
+    mode = 'login'
+    document.getElementById('tabLogin').classList.add('active')
+    document.getElementById('tabSignup').classList.remove('active')
+    document.getElementById('authBtn').textContent = 'ログイン'
+    document.getElementById('authMsg').textContent = ''
   })
 
-  // ─── ログイン ─────────────────────────────────────────
-  document.getElementById('loginBtn').addEventListener('click', async () => {
+  document.getElementById('tabSignup').addEventListener('click', () => {
+    mode = 'signup'
+    document.getElementById('tabSignup').classList.add('active')
+    document.getElementById('tabLogin').classList.remove('active')
+    document.getElementById('authBtn').textContent = '新規登録'
+    document.getElementById('authMsg').textContent = ''
+  })
+
+  // ─── 認証実行 ──────────────────────────────────────────
+  document.getElementById('authBtn').addEventListener('click', async () => {
     const email    = document.getElementById('authEmail').value.trim()
     const password = document.getElementById('authPassword').value
-    const msg      = document.getElementById('authMsg')
-    setAuthBtns(true)
+    const msgEl    = document.getElementById('authMsg')
+    const btn      = document.getElementById('authBtn')
 
-    const { error } = await supabase.auth.signInWithPassword({ email, password })
-    if (error) {
-      msg.className   = 'msg error'
-      msg.textContent = `ログイン失敗: ${error.message}`
+    btn.disabled = true
+    msgEl.textContent = ''
+
+    let error
+
+    if (mode === 'login') {
+      ;({ error } = await supabase.auth.signInWithPassword({ email, password }))
     } else {
-      msg.textContent = ''
+      ;({ error } = await supabase.auth.signUp({ email, password }))
+      if (!error) {
+        msgEl.className   = 'form-msg success'
+        msgEl.textContent = '確認メールを送信しました。メールを確認してください。'
+        btn.disabled = false
+        return
+      }
     }
-    setAuthBtns(false)
+
+    if (error) {
+      msgEl.className   = 'form-msg error'
+      msgEl.textContent = error.message
+    }
+
+    btn.disabled = false
   })
 
-  // ─── ログアウト ───────────────────────────────────────
-  async function handleLogout() {
+  // Enter キーでも認証
+  ['authEmail', 'authPassword'].forEach(id => {
+    document.getElementById(id).addEventListener('keydown', e => {
+      if (e.key === 'Enter') document.getElementById('authBtn').click()
+    })
+  })
+
+  // ─── ログアウト ────────────────────────────────────────
+  document.getElementById('logoutBtn').addEventListener('click', async () => {
     await supabase.auth.signOut()
-  }
+  })
 
-  function setAuthBtns(disabled) {
-    document.getElementById('loginBtn').disabled  = disabled
-    document.getElementById('signupBtn').disabled = disabled
-  }
-
-  // ─── 投稿 ────────────────────────────────────────────
+  // ─── 投稿 ─────────────────────────────────────────────
   document.getElementById('submitBtn').addEventListener('click', async () => {
-    const room = document.getElementById('room').value.trim()
-    const name = document.getElementById('name').value.trim()
-    const body = document.getElementById('body').value.trim()
-    const msg  = document.getElementById('postMsg')
-    const btn  = document.getElementById('submitBtn')
+    const room   = document.getElementById('room').value.trim()
+    const name   = document.getElementById('name').value.trim()
+    const body   = document.getElementById('body').value.trim()
+    const msgEl  = document.getElementById('postMsg')
+    const btn    = document.getElementById('submitBtn')
 
     if (!body) {
-      msg.className   = 'msg error'
-      msg.textContent = '本文を入力してください。'
+      msgEl.className   = 'form-msg error'
+      msgEl.textContent = '本文を入力してください。'
       return
     }
 
-    btn.disabled    = true
-    msg.textContent = ''
+    btn.disabled = true
+    msgEl.textContent = ''
 
     const { error } = await supabase
       .from('messages')
       .insert([{ room: room || 'general', name: name || '匿名', body }])
 
     if (error) {
-      msg.className   = 'msg error'
-      msg.textContent = `投稿失敗: ${error.message}`
+      msgEl.className   = 'form-msg error'
+      msgEl.textContent = `投稿失敗: ${error.message}`
     } else {
-      msg.className   = 'msg success'
-      msg.textContent = '投稿しました！'
+      msgEl.className   = 'form-msg success'
+      msgEl.textContent = '投稿しました！'
       document.getElementById('room').value = ''
       document.getElementById('name').value = ''
       document.getElementById('body').value = ''
       await loadMessages()
     }
+
     btn.disabled = false
   })
 
-  // ─── メッセージ一覧 ───────────────────────────────────
+  // ─── メッセージ一覧 ────────────────────────────────────
   async function loadMessages() {
     const list = document.getElementById('messageList')
     const { data, error } = await supabase
@@ -338,37 +428,37 @@
       .order('created_at', { ascending: false })
 
     if (error) {
-      list.innerHTML = `<p class="status error">読み込み失敗: ${error.message}</p>`
+      list.innerHTML = `<p class="status-text error">読み込み失敗: ${error.message}</p>`
       return
     }
     if (!data || data.length === 0) {
-      list.innerHTML = '<p class="status">まだ投稿がありません。</p>'
+      list.innerHTML = '<p class="status-text">まだ投稿がありません。</p>'
       return
     }
     list.innerHTML = data.map(m => `
       <div class="message-card">
-        <div class="message-header">
-          <span class="message-name">${escapeHtml(m.name ?? '匿名')}</span>
-          <span class="message-date">${formatDate(m.created_at)}</span>
+        <div class="msg-header">
+          <span class="msg-name">${escapeHtml(m.name ?? '匿名')}</span>
+          <span class="msg-date">${formatDate(m.created_at)}</span>
         </div>
-        ${m.room ? `<div class="message-room"># ${escapeHtml(m.room)}</div>` : ''}
-        <div class="message-body">${escapeHtml(m.body ?? '')}</div>
+        ${m.room ? `<div class="msg-room"># ${escapeHtml(m.room)}</div>` : ''}
+        <div class="msg-body">${escapeHtml(m.body ?? '')}</div>
       </div>
     `).join('')
   }
 
-  // リアルタイム更新
   supabase
     .channel('messages')
     .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages' }, loadMessages)
     .subscribe()
 
-  // ─── ユーティリティ ───────────────────────────────────
+  // ─── ユーティリティ ────────────────────────────────────
   function escapeHtml(str) {
     return String(str)
       .replace(/&/g, '&amp;').replace(/</g, '&lt;')
       .replace(/>/g, '&gt;').replace(/"/g, '&quot;')
   }
+
   function formatDate(iso) {
     if (!iso) return ''
     return new Date(iso).toLocaleString('ja-JP', {
@@ -376,8 +466,6 @@
       hour: '2-digit', minute: '2-digit'
     })
   }
-
-  loadMessages()
 </script>
 
 </body>
