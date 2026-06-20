@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>掲示板</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f0f2f5;
+      color: #333;
+      min-height: 100vh;
+    }
+
+    header {
+      background: #4f46e5;
+      color: white;
+      padding: 16px 24px;
+      font-size: 1.4rem;
+      font-weight: bold;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    }
+
+    main {
+      max-width: 720px;
+      margin: 32px auto;
+      padding: 0 16px;
+    }
+
+    /* 投稿フォーム */
+    .post-form {
+      background: white;
+      border-radius: 12px;
+      padding: 24px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      margin-bottom: 32px;
+    }
+
+    .post-form h2 {
+      font-size: 1.1rem;
+      margin-bottom: 16px;
+      color: #4f46e5;
+    }
+
+    .form-group {
+      margin-bottom: 14px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: #555;
+    }
+
+    .form-group input,
+    .form-group textarea {
+      width: 100%;
+      padding: 10px 14px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      transition: border-color 0.2s;
+      font-family: inherit;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-color: #4f46e5;
+    }
+
+    .form-group textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+
+    .submit-btn {
+      background: #4f46e5;
+      color: white;
+      border: none;
+      padding: 10px 24px;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .submit-btn:hover {
+      background: #4338ca;
+    }
+
+    .submit-btn:disabled {
+      background: #a5b4fc;
+      cursor: not-allowed;
+    }
+
+    /* メッセージ一覧 */
+    .messages-section h2 {
+      font-size: 1.1rem;
+      margin-bottom: 16px;
+      color: #333;
+    }
+
+    .message-card {
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 16px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+      animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .message-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .message-name {
+      font-weight: 700;
+      color: #4f46e5;
+      font-size: 0.95rem;
+    }
+
+    .message-date {
+      font-size: 0.78rem;
+      color: #999;
+    }
+
+    .message-title {
+      font-size: 1.05rem;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: #222;
+    }
+
+    .message-room {
+      font-size: 0.78rem;
+      color: #6366f1;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    .message-body {
+      font-size: 0.9rem;
+      line-height: 1.6;
+      color: #555;
+      white-space: pre-wrap;
+    }
+
+    /* 状態表示 */
+    .status {
+      text-align: center;
+      color: #999;
+      font-size: 0.9rem;
+      padding: 24px 0;
+    }
+
+    .error-msg {
+      color: #ef4444;
+      font-size: 0.85rem;
+      margin-top: 8px;
+    }
+
+    .success-msg {
+      color: #22c55e;
+      font-size: 0.85rem;
+      margin-top: 8px;
+    }
+  </style>
+</head>
+<body>
+
+<header>📋 掲示板</header>
+
+<main>
+  <!-- 投稿フォーム -->
+  <div class="post-form">
+    <h2>新しい投稿</h2>
+    <div class="form-group">
+      <label for="room">ルーム</label>
+      <input type="text" id="room" placeholder="例: demo" />
+    </div>
+    <div class="form-group">
+      <label for="name">名前</label>
+      <input type="text" id="name" placeholder="あなたの名前" />
+    </div>
+    <div class="form-group">
+      <label for="body">本文</label>
+      <textarea id="body" placeholder="内容を入力してください"></textarea>
+    </div>
+    <button class="submit-btn" id="submitBtn" onclick="postMessage()">投稿する</button>
+    <p id="formMsg"></p>
+  </div>
+
+  <!-- メッセージ一覧 -->
+  <div class="messages-section">
+    <h2>投稿一覧</h2>
+    <div id="messageList">
+      <p class="status">読み込み中...</p>
+    </div>
+  </div>
+</main>
+
+<script type="module">
+  import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
+
+  const SUPABASE_URL = 'https://gicmqububslgkefpyveg.supabase.co'
+  const SUPABASE_KEY = 'sb_publishable_wWwEoqvg8eOrWnJhY0_HGA_oDHqlroq'
+
+  const supabase = createClient(SUPABASE_URL, SUPABASE_KEY)
+
+  // メッセージ一覧を取得して表示
+  async function loadMessages() {
+    const list = document.getElementById('messageList')
+
+    const { data, error } = await supabase
+      .from('messages')
+      .select('*')
+      .order('created_at', { ascending: false })
+
+    if (error) {
+      list.innerHTML = `<p class="status error-msg">読み込みに失敗しました: ${error.message}</p>`
+      return
+    }
+
+    if (!data || data.length === 0) {
+      list.innerHTML = '<p class="status">まだ投稿がありません。</p>'
+      return
+    }
+
+    list.innerHTML = data.map(msg => `
+      <div class="message-card">
+        <div class="message-header">
+          <span class="message-name">${escapeHtml(msg.name ?? '匿名')}</span>
+          <span class="message-date">${formatDate(msg.created_at)}</span>
+        </div>
+        ${msg.room ? `<div class="message-room"># ${escapeHtml(msg.room)}</div>` : ''}
+        <div class="message-body">${escapeHtml(msg.body ?? '')}</div>
+      </div>
+    `).join('')
+  }
+
+  // 投稿
+  window.postMessage = async function () {
+    const room  = document.getElementById('room').value.trim()
+    const name  = document.getElementById('name').value.trim()
+    const body  = document.getElementById('body').value.trim()
+    const btn   = document.getElementById('submitBtn')
+    const msg   = document.getElementById('formMsg')
+
+    if (!body) {
+      msg.className = 'error-msg'
+      msg.textContent = '本文を入力してください。'
+      return
+    }
+
+    btn.disabled = true
+    msg.textContent = ''
+
+    const { error } = await supabase
+      .from('messages')
+      .insert([{ room: room || 'general', name: name || '匿名', body }])
+
+    if (error) {
+      msg.className = 'error-msg'
+      msg.textContent = `投稿に失敗しました: ${error.message}`
+      btn.disabled = false
+      return
+    }
+
+    msg.className = 'success-msg'
+    msg.textContent = '投稿しました！'
+    document.getElementById('room').value = ''
+    document.getElementById('name').value = ''
+    document.getElementById('body').value = ''
+    btn.disabled = false
+
+    await loadMessages()
+  }
+
+  // リアルタイム更新
+  supabase
+    .channel('messages')
+    .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages' }, () => {
+      loadMessages()
+    })
+    .subscribe()
+
+  // ユーティリティ
+  function escapeHtml(str) {
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+  }
+
+  function formatDate(iso) {
+    if (!iso) return ''
+    const d = new Date(iso)
+    return d.toLocaleString('ja-JP', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' })
+  }
+
+  // 初期ロード
+  loadMessages()
+</script>
+
+</body>
+</html>
